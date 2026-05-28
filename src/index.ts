@@ -184,6 +184,17 @@ async function gracefulShutdown(signal: string): Promise<void> {
 // and exit with a nonzero code so process supervisors / K8s restart us.
 
 async function initServices(): Promise<void> {
+  // 0. Validate production configuration
+  if (config.nodeEnv === 'production') {
+    const adminToken = process.env.ADMIN_API_TOKEN
+    if (!adminToken || adminToken.length < 8) {
+      const msg = 'ADMIN_API_TOKEN must be set to a strong value in production'
+      logger.error('[Startup] Configuration validation failed — cannot continue', { error: msg })
+      throw new Error(msg)
+    }
+    logger.info('[Startup] Admin API token configured ✓')
+  }
+
   // 1. Database
   try {
     await connectDb()

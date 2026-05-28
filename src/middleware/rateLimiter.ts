@@ -20,3 +20,14 @@ export const authRateLimiter = rateLimit({
     error: 'Too many authentication attempts. Please try again in 15 minutes.'
   }
 })
+
+// Stricter rate limit for admin endpoints (10 requests per 15 minutes)
+export const adminRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: 'Too many admin requests. Please try again later.'
+  }
+})
