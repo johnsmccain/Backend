@@ -18,6 +18,7 @@ jest.mock('../../../src/config/jwt-adapter', () => ({
 const mockDb = {
     session: {
         findUnique: jest.fn(),
+        delete: jest.fn().mockResolvedValue({}),
     },
     yieldSnapshot: {
         findMany: jest.fn(),
