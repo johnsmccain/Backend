@@ -270,7 +270,7 @@ export async function startAgentLoop(): Promise<void> {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     lastError = errorMessage;
     // Update Prometheus metrics for error state
-    updateAgentStatus('error');
+    updateAgentStatus('degraded');
     logger.error('Failed to start agent loop', { error: errorMessage });
     throw error;
   }

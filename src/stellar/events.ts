@@ -481,7 +481,7 @@ async function loadLastProcessedLedger(): Promise<number> {
 /**
  * Update last processed ledger in database
  */
-async function updateLastProcessedLedger(ledger: number): Promise<void> {
+async function persistLastProcessedLedger(ledger: number): Promise<void> {
   await prisma.eventCursor.upsert({
     where: { contractId: VAULT_CONTRACT_ID },
     update: {
@@ -543,7 +543,7 @@ async function fetchEvents(startLedger: number): Promise<void> {
     }
 
     // Update cursor in database
-    await updateLastProcessedLedger(latestLedger.sequence);
+    await persistLastProcessedLedger(latestLedger.sequence);
     lastProcessedLedger = latestLedger.sequence;
     // Update Prometheus metrics
     updateLastProcessedLedger(latestLedger.sequence);
